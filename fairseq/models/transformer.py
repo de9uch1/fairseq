@@ -863,7 +863,7 @@ class TransformerDecoder(FairseqIncrementalDecoder):
             )
             inner_states.append(x)
             if layer_attn is not None and idx == alignment_layer:
-                attn = layer_attn.float().to(x)
+                attn = layer_attn
             if return_all_self_attn and layer_self_attn is not None:
                 self_attn.append(layer_self_attn)
 

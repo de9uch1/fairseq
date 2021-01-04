@@ -109,7 +109,6 @@ try:
             )
         ]
     )
-
     if "CUDA_HOME" in os.environ:
         extensions.extend(
             [
@@ -119,7 +118,14 @@ try:
                         "fairseq/clib/libnat_cuda/edit_dist.cu",
                         "fairseq/clib/libnat_cuda/binding.cpp",
                     ],
-                )
+                ),
+                cpp_extension.CppExtension(
+                    "fairseq.ngram_repeat_block_cuda",
+                    sources=[
+                        "fairseq/clib/cuda/ngram_repeat_block_cuda.cpp",
+                        "fairseq/clib/cuda/ngram_repeat_block_cuda_kernel.cu",
+                    ],
+                ),
             ]
         )
     cmdclass["build_ext"] = cpp_extension.BuildExtension
@@ -168,6 +174,8 @@ def do_setup(package_data):
             "Intended Audience :: Science/Research",
             "License :: OSI Approved :: MIT License",
             "Programming Language :: Python :: 3.6",
+            "Programming Language :: Python :: 3.7",
+            "Programming Language :: Python :: 3.8",
             "Topic :: Scientific/Engineering :: Artificial Intelligence",
         ],
         long_description=readme,
@@ -182,7 +190,8 @@ def do_setup(package_data):
             "cffi",
             "cython",
             'dataclasses; python_version<"3.7"',
-            "hydra-core",
+            "hydra-core<1.1",
+            "omegaconf<2.1",
             'numpy<1.20.0; python_version<"3.7"',
             'numpy; python_version>="3.7"',
             "regex",
